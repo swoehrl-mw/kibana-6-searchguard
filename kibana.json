@@ -1,0 +1,75 @@
+{
+  "id": "/elk/{{env}}/kibana",
+  "instances": 1,
+  "cpus": 0.5,
+  "mem": 2048,
+  "cmd": "$MESOS_SANDBOX/kibana-setup.sh",
+  "backoffFactor": 1.15,
+  "backoffSeconds": 1,
+  "gpus": 0,
+  "disk": 0,
+  "container": {
+    "type": "MESOS",
+    "volumes": [],
+    "portMappings": [
+      {
+        "containerPort": 5601,
+        "protocol": "tcp",
+        "name": "kibana",
+        "labels": {},
+        "servicePort": 0
+      }
+    ]
+  },
+  "env": {
+    "ELASTICSEARCH_URL": "https://coordinator.elk{{env}}elastic.l4lb.thisdcos.directory:9200",
+    "ELASTIC_VERSION": "6.3.1",
+    "SEARCHGUARD_KIBANA_VERSION": "14",
+    "KIBANA_ELASTICSEARCH_TLS": "true",
+    "KIBANA_PASSWORD": "TODO",
+    "KIBANA_USER": "kibanaserver",
+    "SEARCHGUARD_ENABLED": "true",
+    "KIBANA_EXTRA_CONFIG": "searchguard.cookie.ttl: 2592000000\nsearchguard.session.ttl: 172800000\nsearchguard.session.keepalive: true\n"
+  },
+  "fetch": [
+    { "uri": "https://artifacts.elastic.co/downloads/kibana/kibana-oss-6.3.1-linux-x86_64.tar.gz", "executable": false, "extract": true, "cache": false },
+    { "uri": "https://oss.sonatype.org/service/local/repositories/releases/content/com/floragunn/search-guard-kibana-plugin/6.3.1-14/search-guard-kibana-plugin-6.3.1-14.zip", "executable": false, "extract": false, "cache": false },
+    { "uri": "https://s3.eu-central-1.amazonaws.com/sebastianw-dcos-dev/kibana-setup.sh", "extract": false, "cache": false, "executable": true }
+  ],
+  "healthChecks": [
+    {
+      "delaySeconds": 180,
+      "gracePeriodSeconds": 900,
+      "intervalSeconds": 30,
+      "ipProtocol": "IPv4",
+      "maxConsecutiveFailures": 2,
+      "path": "/login",
+      "portIndex": 0,
+      "protocol": "MESOS_HTTP",
+      "timeoutSeconds": 30
+    }
+  ],
+  "labels": {
+    "HAPROXY_0_REDIRECT_TO_HTTPS": "true",
+    "HAPROXY_0_VHOST": "kibana.{{env}}.mycorp",
+    "HAPROXY_GROUP": "external"
+  },
+  "networks": [
+    {
+      "name": "dcos",
+      "mode": "container"
+    }
+  ],
+  "requirePorts": false,
+  "user": "nobody",
+  "maxLaunchDelaySeconds": 3600,
+  "killSelection": "YOUNGEST_FIRST",
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  },
+  "unreachableStrategy": {
+   "inactiveAfterSeconds": 0,
+   "expungeAfterSeconds": 0
+  }
+}
