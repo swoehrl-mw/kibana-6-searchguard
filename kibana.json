@@ -23,8 +23,8 @@
   },
   "env": {
     "ELASTICSEARCH_URL": "https://coordinator.elk{{env}}elastic.l4lb.thisdcos.directory:9200",
-    "ELASTIC_VERSION": "6.3.1",
-    "SEARCHGUARD_KIBANA_VERSION": "14",
+    "ELASTIC_VERSION": "6.4.2",
+    "SEARCHGUARD_KIBANA_VERSION": "16",
     "KIBANA_ELASTICSEARCH_TLS": "true",
     "KIBANA_PASSWORD": "TODO",
     "KIBANA_USER": "kibanaserver",
@@ -32,8 +32,8 @@
     "KIBANA_EXTRA_CONFIG": "searchguard.cookie.ttl: 2592000000\nsearchguard.session.ttl: 172800000\nsearchguard.session.keepalive: true\n"
   },
   "fetch": [
-    { "uri": "https://artifacts.elastic.co/downloads/kibana/kibana-oss-6.3.1-linux-x86_64.tar.gz", "executable": false, "extract": true, "cache": false },
-    { "uri": "https://oss.sonatype.org/service/local/repositories/releases/content/com/floragunn/search-guard-kibana-plugin/6.3.1-14/search-guard-kibana-plugin-6.3.1-14.zip", "executable": false, "extract": false, "cache": false },
+    { "uri": "https://artifacts.elastic.co/downloads/kibana/kibana-oss-6.4.2-linux-x86_64.tar.gz", "executable": false, "extract": true, "cache": false },
+    { "uri": "https://oss.sonatype.org/service/local/repositories/releases/content/com/floragunn/search-guard-kibana-plugin/6.4.2-16/search-guard-kibana-plugin-6.4.2-16.zip", "executable": false, "extract": false, "cache": false },
     { "uri": "https://s3.eu-central-1.amazonaws.com/sebastianw-dcos-dev/kibana-setup.sh", "extract": false, "cache": false, "executable": true }
   ],
   "healthChecks": [
